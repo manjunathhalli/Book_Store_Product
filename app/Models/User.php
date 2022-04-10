@@ -64,4 +64,16 @@ class User extends Authenticatable implements JWTSubject
     {
         return [];
     }
+
+    public function userEmailValidation($email)
+    {
+        $user = User::where('email', $email)->first();
+        return $user;
+    }
+
+    public function saveUserDetails($validator)
+    {
+        $user = User::create($validator);
+        return $user;
+    }
 }
