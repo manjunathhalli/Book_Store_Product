@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ForgotPasswordController;
+use App\Http\Controllers\BookController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,5 +28,12 @@ Route::group(['middleware' => 'api'], function () {
 
     Route::post('forgotPassword', [ForgotPasswordController::class, 'forgotPassword']);
     Route::post('resetPassword', [ForgotPasswordController::class, 'resetPassword']);
+
+
+    Route::post('addingBook', [BookController::class, 'addingBook']);
+    Route::post('updateBookById', [BookController::class, 'updateBookById']);
+    Route::post('deleteBookById', [BookController::class, 'deleteBookById']);
+    Route::post('addQuantityToExistBook', [BookController::class, 'addQuantityToExistBook']);
+    Route::get('displayAllBooks', [BookController::class, 'displayAllBooks']);
 
 });

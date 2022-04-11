@@ -9,6 +9,237 @@
         "version": "1.0.0"
     },
     "paths": {
+        "/api/addingBook": {
+            "post": {
+                "summary": "addBook to s3 bucket ",
+                "description": "addbook from Admin only",
+                "operationId": "c2ff2892dbef923790bbb19735113cad",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "description",
+                                    "author",
+                                    "image",
+                                    "price",
+                                    "quantity"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "author": {
+                                        "type": "string"
+                                    },
+                                    "image": {
+                                        "type": "file"
+                                    },
+                                    "price": {
+                                        "type": "decimal"
+                                    },
+                                    "quantity": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Book created successfully"
+                    },
+                    "404": {
+                        "description": "Invalid authorization toke"
+                    },
+                    "401": {
+                        "description": "Book is already exist in there"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/updateBookById": {
+            "post": {
+                "summary": "updateBook in s3 bucket ",
+                "description": "updateBook from Admin only",
+                "operationId": "61f36dda042966f7c0faeefee548631c",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "id",
+                                    "name",
+                                    "description",
+                                    "author",
+                                    "image",
+                                    "price"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "author": {
+                                        "type": "string"
+                                    },
+                                    "image": {
+                                        "type": "file"
+                                    },
+                                    "price": {
+                                        "type": "decimal"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Book updated Sucessfully"
+                    },
+                    "404": {
+                        "description": "Invalid authorization token"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/addQuantityToExistBook": {
+            "post": {
+                "summary": "add quantity to existing book ",
+                "description": "add quantity to book",
+                "operationId": "1fc31edf7c300257c2faada0aa3e685d",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "id",
+                                    "quantity"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    },
+                                    "quantity": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Book Quantity updated Successfully"
+                    },
+                    "404": {
+                        "description": "Couldnot found a book with that given id"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/deleteBookById": {
+            "post": {
+                "summary": "delete in s3 bucket ",
+                "description": "deleted Book from s3 bucket and databse ",
+                "operationId": "b8fbc4623ee546cda0f2f799f6071235",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "id"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Book Deleted Sucessfully"
+                    },
+                    "404": {
+                        "description": "Invalid authorization token"
+                    },
+                    "401": {
+                        "description": "NOT AN ADMIN"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/displayAllBooks": {
+            "get": {
+                "summary": "display all books from book store ",
+                "description": "get all books from bookstore ",
+                "operationId": "2c28750ebd567bc3ae94d13cf1ac51db",
+                "requestBody": {},
+                "responses": {
+                    "201": {
+                        "description": "Display All books are"
+                    },
+                    "404": {
+                        "description": "Books are not there"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
         "/api/forgotPassword": {
             "post": {
                 "summary": "forgot password",
@@ -90,6 +321,65 @@
                         "Bearer": []
                     }
                 ]
+            }
+        },
+        "/api/register": {
+            "post": {
+                "summary": "register",
+                "description": "register the user for login",
+                "operationId": "2f25885f3b6f61ca11724ec302d2e439",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "role",
+                                    "first_name",
+                                    "last_name",
+                                    "phone_no",
+                                    "email",
+                                    "password",
+                                    "confirm_password"
+                                ],
+                                "properties": {
+                                    "role": {
+                                        "type": "string"
+                                    },
+                                    "first_name": {
+                                        "type": "string"
+                                    },
+                                    "last_name": {
+                                        "type": "string"
+                                    },
+                                    "phone_no": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "password"
+                                    },
+                                    "confirm_password": {
+                                        "type": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "User Successfully Registered"
+                    },
+                    "401": {
+                        "description": "The email has already been taken"
+                    }
+                }
             }
         },
         "/api/login": {

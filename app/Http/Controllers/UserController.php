@@ -37,8 +37,6 @@ class UserController extends Controller
      *   @OA\Response(response=201, description="User Successfully Registered"),
      *   @OA\Response(response=401, description="The email has already been taken")
      * )  
-     */
-    /**
      * Register a User.
      * path="api/register",
      * description="register the user for login",
@@ -114,8 +112,8 @@ class UserController extends Controller
      * if so, returns JWT access token.
      * 
      * @return \Illuminate\Http\JsonResponse
-     */ 
-    
+     */
+
     public function login(Request $request)
     {
         try {

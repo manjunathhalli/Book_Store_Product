@@ -76,4 +76,8 @@ class User extends Authenticatable implements JWTSubject
         $user = User::create($validator);
         return $user;
     }
+    public function books()
+    {
+        return $this->hasMany('App\Models\Book');
+    }
 }
