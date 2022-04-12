@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\CartController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,4 +37,7 @@ Route::group(['middleware' => 'api'], function () {
     Route::post('addQuantityToExistBook', [BookController::class, 'addQuantityToExistBook']);
     Route::get('displayAllBooks', [BookController::class, 'displayAllBooks']);
 
+    Route::post('addBookToCartByBookId', [CartController::class, 'addBookToCartByBookId']);
+    Route::post('deleteBookByCartId', [CartController::class, 'deleteBookByCartId']);
+    Route::get('getAllBooksInCart', [CartController::class, 'getAllBooksInCart']);
 });
