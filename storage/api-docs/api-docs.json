@@ -240,6 +240,88 @@
                 ]
             }
         },
+        "/api/sortPriceLowToHigh": {
+            "get": {
+                "summary": "Assending order Books based on Price  ",
+                "description": "display all books in assending order based on price",
+                "operationId": "bd0bb909757a18ebd06d818f5c84b016",
+                "requestBody": {},
+                "responses": {
+                    "201": {
+                        "description": "Sorting Books are Low to high"
+                    },
+                    "404": {
+                        "description": "Books not found"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/sortPriceHighToLow": {
+            "get": {
+                "summary": "Descending order Books based on Price  ",
+                "description": "display all books in Descending order based on price",
+                "operationId": "3728e00720050458ad18654cc0378002",
+                "requestBody": {},
+                "responses": {
+                    "201": {
+                        "description": "Sorting Books are High to low"
+                    },
+                    "404": {
+                        "description": "Books not found"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/searchBookByKeyword": {
+            "post": {
+                "summary": "search Book Enter Search Key ",
+                "description": "Searching Book using Search key in books table ",
+                "operationId": "a8f2325db885c03a9184cbefa2439c10",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "search"
+                                ],
+                                "properties": {
+                                    "search": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Search done Successfully"
+                    },
+                    "404": {
+                        "description": "No Book Found For This Search Key"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
         "/api/addBookToCartByBookId": {
             "post": {
                 "summary": "addBook to cart using book Id ",

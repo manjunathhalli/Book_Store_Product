@@ -375,4 +375,133 @@ class BookController extends Controller
             return $exception->message();
         }
     }
+
+
+    /**
+     *  @OA\get(
+     *   path="/api/sortPriceLowToHigh",
+     *   summary="Assending order Books based on Price  ",
+     *   description="display all books in assending order based on price",
+     *   @OA\RequestBody(
+     *        ),
+     *   @OA\Response(response=201, description="Sorting Books are Low to high"),
+     *   @OA\Response(response=404, description="Books not found"),                               
+     *   security={
+     *       {"Bearer": {}}
+     *     }
+     * )
+     * Function returns (display) all the books in the Assending order .
+     */
+
+    public function sortPriceLowToHigh()
+    {
+        $currentUser = JWTAuth::parseToken()->authenticate();
+        $book = new Book();
+        if ($currentUser) {
+            $bookDetails = $book->ascendingOrder();
+        }
+        if ($bookDetails == []) {
+            return response()->json(['message' => 'Books not found'], 404);
+        }
+        return response()->json([
+            'message' => 'Sorting Books are Low to high',
+            'books' => $bookDetails
+        ], 201);
+    }
+
+
+    /**
+     *  @OA\get(
+     *   path="/api/sortPriceHighToLow",
+     *   summary="Descending order Books based on Price  ",
+     *   description="display all books in Descending order based on price",
+     *   @OA\RequestBody(
+     *        ),
+     *   @OA\Response(response=201, description="Sorting Books are High to low"),
+     *   @OA\Response(response=404, description="Books not found"),                               
+     *   security={
+     *       {"Bearer": {}}
+     *     }
+     * )
+     * Function returns (display) all the books in the Descending order .
+     */
+
+    public function sortPriceHighToLow()
+    {
+        $currentUser = JWTAuth::parseToken()->authenticate();
+        $book = new Book();
+        if ($currentUser) {
+            $bookDetails = $book->descendingOrder();
+        }
+        if ($bookDetails == []) {
+            return response()->json(['message' => 'Books not found'], 404);
+        }
+        return response()->json([
+            'message' => 'Sorting Books are High to Low',
+            'books' => $bookDetails
+        ], 201);
+    }
+
+    /**
+     *  @OA\Post(
+     *   path="/api/searchBookByKeyword",
+     *   summary="search Book Enter Search Key ",
+     *   description="Searching Book using Search key in books table ",
+     *   @OA\RequestBody(
+     *         @OA\JsonContent(),
+     *         @OA\MediaType(
+     *            mediaType="multipart/form-data",
+     *            @OA\Schema(
+     *               type="object",
+     *             required={"search"},
+     *               @OA\Property(property="search", type="string"),
+     *               
+     *            ),
+     *        ),
+     *    ),
+     *   @OA\Response(response=201, description="Search done Successfully"),
+     *   @OA\Response(response=404, description="No Book Found For This Search Key"),                             
+     *   security={
+     *       {"Bearer": {}}
+     *     }
+     * )
+     * Function takes search key and a valid Authentication token as an input
+     * and fetch the book in the bookstore database and performs shows books 
+     * from the books list
+     */
+
+    public function searchBookByKeyword(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'search' => 'required|string'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors()->toJson(), 400);
+        }
+        try {
+            $searchKey = $request->input('search');
+            $currentUser = JWTAuth::parseToken()->authenticate();
+
+            if ($currentUser) {
+                $userbooks = Book::leftJoin('carts', 'carts.book_id', '=', 'books.id')
+                    ->select('books.id', 'books.name', 'books.description', 'books.author', 'books.image', 'books.Price', 'books.quantity')
+                    ->Where('books.name', 'like', '%' . $searchKey . '%')
+                    ->orWhere('books.author', 'like', '%' . $searchKey . '%')
+                    ->get();
+
+                if ($userbooks == '[]') {
+                    Log::error('No Book Found');
+                    throw new BookStoreException("No Book Found For This Search Key ", 404);
+                }
+                Log::info('Search is Successfull');
+                return response()->json([
+                    'message' => 'Search done Successfully',
+                    'books' => $userbooks
+                ], 201);
+            }
+        } catch (BookStoreException $exception) {
+            return $exception->message();
+        }
+    }
 }
