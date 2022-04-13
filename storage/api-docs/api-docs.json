@@ -426,6 +426,86 @@
                 ]
             }
         },
+        "/api/increamentBookQuantityInCart": {
+            "post": {
+                "summary": "Add Quantity to Existing Book in cart ",
+                "description": "Add Book Quantity  in cart",
+                "operationId": "f9c456ebe74f43ddd5838d8baf159fc7",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "id"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Book Quantity increament success"
+                    },
+                    "404": {
+                        "description": "Invalid authorization token"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/decrementBookQuantityInCart": {
+            "post": {
+                "summary": "Delete Quantity to Existing Book in cart ",
+                "description": "delete Book Quantity  in cart",
+                "operationId": "691c4dcb53e7e6cb540dfc84f74c6922",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "id"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Book Quantity Decreament Success"
+                    },
+                    "404": {
+                        "description": "Invalid authorization token"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
         "/api/forgotPassword": {
             "post": {
                 "summary": "forgot password",
@@ -638,6 +718,107 @@
                         "description": "successfully Logged out"
                     }
                 }
+            }
+        },
+        "/api/addBookToWishlistByBookId": {
+            "post": {
+                "summary": "Add the book to wishlist",
+                "description": " Add book to wishlist",
+                "operationId": "71ab0c43383caaf692a993e2141f3554",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "book_id"
+                                ],
+                                "properties": {
+                                    "book_id": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Book added to wishlist Success"
+                    },
+                    "404": {
+                        "description": "Invalid authorization token"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/deleteBookByWishlistId": {
+            "post": {
+                "summary": "Delete the book to wishlist",
+                "description": " Delete book to wishlist",
+                "operationId": "7a05c8276280a8da7a90ea527ce0c74b",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "id"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Book deleted Sucessfully from wishlist"
+                    },
+                    "404": {
+                        "description": "Invalid authorization token"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/getAllBooksInWishlist": {
+            "get": {
+                "summary": "Get All Books Present in wishlist",
+                "description": "DisplayAll Books Present in wishlist",
+                "operationId": "e7aa85738c27085d4d936d245a2cc08b",
+                "requestBody": {},
+                "responses": {
+                    "201": {
+                        "description": "'Books Present in wishlist :"
+                    },
+                    "404": {
+                        "description": "Invalid Authorization token"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
             }
         }
     },
