@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Book;
 use App\Models\Cart;
 use App\Models\User;
+use App\Models\WishList;
 use App\Exceptions\BookStoreException;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
@@ -388,6 +389,102 @@ class CartController extends Controller
             ], 201);
         } catch (BookStoreException $exception) {
             return $exception->message();
+        }
+    }
+
+    /**
+     *  @OA\Post(
+     *   path="/api/addBookToCartByWishlistId",
+     *   summary="Added the Book in cart by wishlist Id ",
+     *   description="Added Book to the cart using wishlist",
+     *   @OA\RequestBody(
+     *         @OA\JsonContent(),
+     *         @OA\MediaType(
+     *            mediaType="multipart/form-data",
+     *            @OA\Schema(
+     *               type="object",
+     *             required={"wishlist_id"},
+     *               @OA\Property(property="wishlist_id", type="integer"),
+     *            ),
+     *        ),
+     *    ),
+     *   @OA\Response(response=201, description="Book added to Cart Sucessfully"),
+     *   @OA\Response(response=404, description="Invalid authorization token"),
+     *   security={
+     *       {"Bearer": {}}
+     *     }
+     * )
+     * 
+     * This function will take input as wishlist id and 
+     * save in the cart
+     * the book store in the cart
+     */
+
+    public function addBookToCartByWishlistId(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'wishlist_id' => 'required|integer',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors()->toJson(), 400);
+        }
+        $currentUser = JWTAuth::parseToken()->authenticate();
+
+        $user = new User();
+        $book = new Book();
+        $cart = new Cart();
+        $userId = $user->userVerification($currentUser->id);
+        if (count($userId)==0) {
+            return response()->json(['message' => 'NOT AN USER'], 404);
+        }
+        if ($currentUser) {
+            $wishlist = WishList::where('id', $request->wishlist_id)->first();
+            //return $wishlist;
+            $book_id = $wishlist['book_id'];
+            //return $book_id;
+            $book_existance = $book->findingBook($book_id);
+            //return $book_existance;
+
+            if (!$book_existance) {
+                return response()->json([
+                    'status' => 404,
+                    'message' => 'Book not Found'
+                ], 404);
+            }
+            $books = Book::find($book_id);
+
+            if ($books->quantity == 0) {
+                return response()->json([
+                    'status' => 404,
+                    'message' => 'OUT OF STOCK'
+                ], 404);
+            }
+            $book_cart = $cart->bookCart($book_id, $currentUser->id);
+
+            if ($book_cart) {
+                return response()->json([
+                    'status' => 404,
+                    'message' => 'Book already added in cart'
+                ], 404);
+            }
+
+            $cart->book_id = $wishlist['book_id'];
+            if ($currentUser->carts()->save($cart)) {
+
+                $wishlist->delete();
+                Cache::remember('carts', 3600, function () {
+                    return DB::table('carts')->get();
+                });
+                return response()->json([
+                    'message' => 'Book added to Cart Sucessfully'
+                ], 201);
+            }
+
+            return response()->json(['message' => 'Book cannot be added to Cart'], 405);
+        } else {
+            Log::error('Invalid User');
+            throw new BookStoreException("Invalid authorization token", 404);
         }
     }
 }

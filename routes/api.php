@@ -47,6 +47,7 @@ Route::group(['middleware' => 'api'], function () {
     Route::get('getAllBooksInCart', [CartController::class, 'getAllBooksInCart']);
     Route::post('increamentBookQuantityInCart', [CartController::class, 'increamentBookQuantityInCart']);
     Route::post('decrementBookQuantityInCart', [CartController::class, 'decrementBookQuantityInCart']);
+    Route::post('addBookToCartByWishlistId', [CartController::class, 'addBookToCartByWishlistId']);
 
     Route::post('addBookToWishlistByBookId', [WishlistController::class, 'addBookToWishlistByBookId']);
     Route::post('deleteBookByWishlistId', [WishlistController::class, 'deleteBookByWishlistId']);

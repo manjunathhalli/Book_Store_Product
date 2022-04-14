@@ -506,6 +506,46 @@
                 ]
             }
         },
+        "/api/addBookToCartByWishlistId": {
+            "post": {
+                "summary": "Added the Book in cart by wishlist Id ",
+                "description": "Added Book to the cart using wishlist",
+                "operationId": "8788a03ad17bd5c2ac336e554fd87f4f",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "wishlist_id"
+                                ],
+                                "properties": {
+                                    "wishlist_id": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Book added to Cart Sucessfully"
+                    },
+                    "404": {
+                        "description": "Invalid authorization token"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
         "/api/forgotPassword": {
             "post": {
                 "summary": "forgot password",
