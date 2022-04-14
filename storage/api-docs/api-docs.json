@@ -9,6 +9,191 @@
         "version": "1.0.0"
     },
     "paths": {
+        "/api/addAddress": {
+            "post": {
+                "summary": "user add address",
+                "description": "User can add address",
+                "operationId": "abd1c37c08074a7a38aead269f18a510",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "address",
+                                    "city",
+                                    "state",
+                                    "landmark",
+                                    "pincode",
+                                    "address_type"
+                                ],
+                                "properties": {
+                                    "address": {
+                                        "type": "string"
+                                    },
+                                    "city": {
+                                        "type": "string"
+                                    },
+                                    "state": {
+                                        "type": "string"
+                                    },
+                                    "landmark": {
+                                        "type": "string"
+                                    },
+                                    "pincode": {
+                                        "type": "integer"
+                                    },
+                                    "address_type": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": " Address Added Successfully"
+                    },
+                    "401": {
+                        "description": "Address alredy present in the user"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/updateAddress": {
+            "post": {
+                "summary": "user update Address ",
+                "description": "User can updateing the Address",
+                "operationId": "70a93647591ea23a0125c8906cf88bc3",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "id",
+                                    "address",
+                                    "city",
+                                    "state",
+                                    "landmark",
+                                    "pincode",
+                                    "address_type"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    },
+                                    "address": {
+                                        "type": "string"
+                                    },
+                                    "city": {
+                                        "type": "string"
+                                    },
+                                    "state": {
+                                        "type": "string"
+                                    },
+                                    "landmark": {
+                                        "type": "string"
+                                    },
+                                    "pincode": {
+                                        "type": "integer"
+                                    },
+                                    "address_type": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Address Updated Successfully"
+                    },
+                    "401": {
+                        "description": "Address not present please add address first"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/deleteAddress": {
+            "post": {
+                "summary": "user delete Address ",
+                "description": "User can delete the Address",
+                "operationId": "7ee01710cba1151aafc2446826cede19",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "id"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Address deleted Sucessfully"
+                    },
+                    "404": {
+                        "description": "Invalid Authentication Token"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/getAddress": {
+            "get": {
+                "summary": "Get Address ",
+                "description": "Get Address",
+                "operationId": "957862060ee76d700293468a55f92cf5",
+                "requestBody": {},
+                "responses": {
+                    "201": {
+                        "description": "Fetched Address Successfully"
+                    },
+                    "404": {
+                        "description": "Address not found"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
         "/api/addingBook": {
             "post": {
                 "summary": "addBook to s3 bucket ",
