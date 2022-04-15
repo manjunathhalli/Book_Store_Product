@@ -8,6 +8,7 @@ use App\Http\Controllers\BookController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\AddressController;
+use App\Http\Controllers\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -58,4 +59,6 @@ Route::group(['middleware' => 'api'], function () {
     Route::post('updateAddress', [AddressController::class, 'updateAddress']);
     Route::post('deleteAddress', [AddressController::class, 'deleteAddress']);
     Route::post('getAddress', [AddressController::class, 'getAddress']);
+
+    Route::post('placeOrder', [OrderController::class, 'placeOrder']);
 });

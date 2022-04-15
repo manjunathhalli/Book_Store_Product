@@ -814,6 +814,54 @@
                 ]
             }
         },
+        "/api/placeOrder": {
+            "post": {
+                "summary": "place Order",
+                "description": "place order to address",
+                "operationId": "759b5d33d6b538e7c777d7ea76488ea4",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "address_id",
+                                    "name",
+                                    "quantity"
+                                ],
+                                "properties": {
+                                    "address_id": {
+                                        "type": "integer"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "quantity": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": " Order Successfully Placed and Mail also sent to the user with all details"
+                    },
+                    "401": {
+                        "description": "We Do not have this book in the store"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
         "/api/register": {
             "post": {
                 "summary": "register",

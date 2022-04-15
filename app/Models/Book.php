@@ -41,6 +41,13 @@ class Book extends Model
         return Book::orderBy('Price', 'DESC')->get();
     }
 
+    public function getBookDetails($bookName)
+    {
+        return Book::select('id', 'name', 'quantity', 'author', 'Price')
+            ->where('name', '=', $bookName)
+            ->first();
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
