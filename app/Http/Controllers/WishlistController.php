@@ -53,7 +53,6 @@ class WishlistController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors()->toJson(), 400);
         }
-
         try {
             $currentUser = JWTAuth::parseToken()->authenticate();
             $wishlist = new WishList();
@@ -80,7 +79,6 @@ class WishlistController extends Controller
                 if ($book_wishlist) {
                     return response()->json(['message' => 'Book already added to the Wishlist'], 404);
                 }
-
                 $wishlist->book_id = $request->get('book_id');
 
                 if ($currentUser->wishlists()->save($wishlist)) {
@@ -140,15 +138,14 @@ class WishlistController extends Controller
             $currentUser = JWTAuth::parseToken()->authenticate();
             $user = new User();
             $userId = $user->userVerification($currentUser->id);
+
             if (count($userId) == 0) {
                 return response()->json(['message' => 'NOT AN USER'], 404);
             }
-
             if (!$currentUser) {
                 Log::error('Invalid User');
                 throw new BookStoreException("Invalid authorization token", 404);
             }
-
             $book = $currentUser->wishlists()->find($id);
             if (!$book) {
                 Log::error('Book Not Found', ['id' => $request->id]);

@@ -78,7 +78,6 @@ class BookController extends Controller
                 if ($bookDetails) {
                     throw new BookStoreException("Book is already exist in there", 401);
                 }
-
                 //$imageName = time() . '.' . $request->image->extension();
                 $path = Storage::disk('s3')->put('bookimage2', $request->image);
                 $url = env('AWS_URL') . $path;

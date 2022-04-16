@@ -58,17 +58,17 @@ class OrderController extends Controller
             return response()->json($validator->errors()->toJson(), 400);
         }
         try {
-            $currentUser = JWTAuth::parseToken()->authenticate();
-            if ($currentUser) {
+            $user = JWTAuth::parseToken()->authenticate();
+            if ($user) {
                 $book = new Book();
                 $address = new Address();
-                $bookDetails = $book->getBookDetails($request->input('name'));
-                if ($bookDetails == '') {
+                $bookDetail = $book->getBookDetails($request->input('name'));
+                if ($bookDetail == '') {
                     Log::error('Book is not available');
                     throw new BookStoreException("We Do not have this book in the store", 401);
                 }
 
-                if ($bookDetails['quantity'] < $request->input('quantity')) {
+                if ($bookDetail['quantity'] < $request->input('quantity')) {
                     Log::error('Book stock is not available');
                     throw new BookStoreException("This much stock is unavailable for the book", 401);
                 }
@@ -80,24 +80,25 @@ class OrderController extends Controller
                 }
 
                 //calculate total price
-                $total_price = $request->input('quantity') * $bookDetails['Price'];
+                $total_price = $request->input('quantity') * $bookDetail['Price'];
 
                 $order = Order::create([
-                    'user_id' => $currentUser->id,
-                    'book_id' => $bookDetails['id'],
+                    'user_id' => $user->id,
+                    'book_id' => $bookDetail['id'],
                     'address_id' => $getAddress['id'],
+                    'order_id' => $this->UniqueOrderId(),
                 ]);
 
-                $userId = User::where('id', $currentUser->id)->first();
+                $userId = User::where('id', $user->id)->first();
 
                 $delay = now()->addSeconds(5);
-                $userId->notify((new SendOrderDetails($order->id, $bookDetails['name'], $bookDetails['author'], $request->input('quantity'), $total_price))->delay($delay));
+                $userId->notify((new SendOrderDetails($order->order_id, $bookDetail['name'], $bookDetail['author'], $request->input('quantity'), $total_price))->delay($delay));
 
-                $bookDetails['quantity'] -= $request->quantity;
-                $bookDetails->save();
+                $bookDetail['quantity'] -= $request->quantity;
+                $bookDetail->save();
                 return response()->json([
                     'message1' => 'Order Successfully Placed',
-                    'OrderId' => $order->id,
+                    'OrderId' => $order->order_id,
                     'Quantity' => $request->input('quantity'),
                     'Total_Price' => $total_price,
                     'message2' => 'Mail also sent to the user with all details',
@@ -109,5 +110,14 @@ class OrderController extends Controller
         } catch (BookStoreException $exception) {
             return $exception->message();
         }
+    }
+
+    public function UniqueOrderId()
+    {
+        do {
+            $orderid = random_int(1000000000, 9999999999);
+        } while (Order::where("order_id", "=", $orderid)->first());
+
+        return $orderid;
     }
 }

@@ -22,14 +22,12 @@ class Address extends Model
     {
         return Address::where('id', $userId)->first();
     }
-
     public function userAddress($userId) {
         $userAddress = Address::select('addresses.id', 'addresses.user_id', 'addresses.address', 'addresses.city', 'addresses.state', 'addresses.landmark', 'addresses.pincode', 'addresses.address_type')
         ->where([['addresses.user_id', '=', $userId]])
         ->get();
         return $userAddress;
     }
-
     public function user()
     {
         return $this->belongsTo(User::class);
