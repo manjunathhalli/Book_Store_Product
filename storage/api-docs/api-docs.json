@@ -225,7 +225,7 @@
                                         "type": "file"
                                     },
                                     "Price": {
-                                        "type": "integer"
+                                        "type": "decimal"
                                     },
                                     "quantity": {
                                         "type": "integer"

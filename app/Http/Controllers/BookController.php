@@ -31,7 +31,7 @@ class BookController extends Controller
      *               @OA\Property(property="description", type="string"),
      *               @OA\Property(property="author", type="string"),
      *               @OA\Property(property="image", type="file"),
-     *               @OA\Property(property="Price", type="integer"),
+     *               @OA\Property(property="Price", type="decimal"),
      *               @OA\Property(property="quantity", type="integer"),
      *            ),
      *        ),
