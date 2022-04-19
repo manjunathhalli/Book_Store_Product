@@ -71,9 +71,16 @@ class User extends Authenticatable implements JWTSubject
         return $user;
     }
 
-    public function saveUserDetails($validator)
+    public function saveUserDetails($request)
     {
-        $user = User::create($validator);
+        $user = User::create([
+            'role' => $request->role,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'phone_no' => $request->phone_no,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+        ]);
         return $user;
     }
 

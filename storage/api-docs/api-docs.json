@@ -932,8 +932,7 @@
                             "schema": {
                                 "required": [
                                     "email",
-                                    "password",
-                                    "confirm_password"
+                                    "password"
                                 ],
                                 "properties": {
                                     "email": {

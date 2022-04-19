@@ -16,6 +16,18 @@ class Order extends Model
         'order_id'
     ];
 
+    // public function orderCreation($order)
+    // {
+    //      $order = Order::create([
+    //     'user_id' => $currentUser->id,
+    //     'book_id' => $bookDetails['id'],
+    //     'address_id' => $getAddress['id'],
+       
+    // ]);
+    // return $order;
+
+    // }
+
     public function user()
     {
         return $this->belongsTo(User::class);
