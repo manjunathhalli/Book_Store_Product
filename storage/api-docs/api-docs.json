@@ -208,7 +208,7 @@
                                     "description",
                                     "author",
                                     "image",
-                                    "price",
+                                    "Price",
                                     "quantity"
                                 ],
                                 "properties": {
@@ -224,8 +224,8 @@
                                     "image": {
                                         "type": "file"
                                     },
-                                    "price": {
-                                        "type": "decimal"
+                                    "Price": {
+                                        "type": "integer"
                                     },
                                     "quantity": {
                                         "type": "integer"
@@ -272,7 +272,7 @@
                                     "description",
                                     "author",
                                     "image",
-                                    "price"
+                                    "Price"
                                 ],
                                 "properties": {
                                     "id": {
@@ -290,7 +290,7 @@
                                     "image": {
                                         "type": "file"
                                     },
-                                    "price": {
+                                    "Price": {
                                         "type": "decimal"
                                     }
                                 },
