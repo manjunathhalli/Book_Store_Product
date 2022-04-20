@@ -731,6 +731,46 @@
                 ]
             }
         },
+        "/api/feedback": {
+            "post": {
+                "summary": "user feedback",
+                "description": "feedback from user",
+                "operationId": "b02fa70a46a26374bd47556fe186b168",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "feedback"
+                                ],
+                                "properties": {
+                                    "feedback": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "feedback submited successfully"
+                    },
+                    "401": {
+                        "description": "Invalid authorization token"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
         "/api/forgotPassword": {
             "post": {
                 "summary": "forgot password",
