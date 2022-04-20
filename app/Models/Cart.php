@@ -20,6 +20,15 @@ class Cart extends Model
         ])->first();
     }
 
+    public function getAllBooks($currentUser)
+    {
+        $books = Cart::leftJoin('books', 'carts.book_id', '=', 'books.id')
+        ->select('books.id', 'books.name', 'books.author', 'books.description', 'books.Price', 'carts.book_quantity')
+        ->where('carts.user_id', '=', $currentUser->id)
+        ->get();
+
+        return $books;             
+    }
 
     public function book()
     {

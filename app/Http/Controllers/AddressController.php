@@ -62,21 +62,8 @@ class AddressController extends Controller
             $currentUser = JWTAuth::parseToken()->authenticate();
             if ($currentUser) {
                 $address = new Address();
-                // $address_exist = $address->addressExist($currentUser->id);
 
-                // if ($address_exist) {
-                //     Log::error('Address alredy present');
-                //     throw new BookStoreException("Address alredy present in the user", 401);
-                // }
-
-                $address->user_id = $currentUser->id;
-                $address->address = $request->input('address');
-                $address->city = $request->input('city');
-                $address->state = $request->input('state');
-                $address->landmark = $request->input('landmark');
-                $address->pincode = $request->input('pincode');
-                $address->address_type = $request->input('address_type');
-                $address->save();
+                $address->address($request, $currentUser)->save();
                 Log::info('Address Added To Respective User', ['user_id', '=', $currentUser->id]);
                 return response()->json([
                     'message' => ' Address Added Successfully'

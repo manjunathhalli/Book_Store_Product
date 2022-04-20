@@ -225,23 +225,19 @@ class CartController extends Controller
                 ], 404);
             }
             if ($currentUser) {
-                $books = Cart::leftJoin('books', 'carts.book_id', '=', 'books.id')
-                    ->select('books.id', 'books.name', 'books.author', 'books.description', 'books.Price', 'carts.book_quantity')
-                    ->where('carts.user_id', '=', $currentUser->id)
-                    ->get();
 
+                $books = new Cart();
+                Log::info('All Book Present in Cart are Fetched');
+                return response()->json([
+                    'message' => 'All Books Present in Cart',
+                    'Cart' => $books->getAllBooks($currentUser)
+                ], 201);
                 if ($books == []) {
                     Log::error('Book not found');
                     return response()->json([
                         'message' => 'Books not found'
                     ], 404);
                 }
-
-                Log::info('All Book Present in Cart are Fetched');
-                return response()->json([
-                    'message' => 'All Books Present in Cart',
-                    'Cart' => $books
-                ], 201);
             } else {
                 Log::error('Invalid User');
                 throw new BookStoreException("Invalid Authorization token", 404);
@@ -435,16 +431,13 @@ class CartController extends Controller
         $book = new Book();
         $cart = new Cart();
         $userId = $user->userVerification($currentUser->id);
-        if (count($userId)==0) {
+        if (count($userId) == 0) {
             return response()->json(['message' => 'NOT AN USER'], 404);
         }
         if ($currentUser) {
             $wishlist = WishList::where('id', $request->wishlist_id)->first();
-            //return $wishlist;
             $book_id = $wishlist['book_id'];
-            //return $book_id;
             $book_existance = $book->findingBook($book_id);
-            //return $book_existance;
 
             if (!$book_existance) {
                 return response()->json([

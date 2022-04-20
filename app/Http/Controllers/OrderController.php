@@ -83,6 +83,7 @@ class OrderController extends Controller
                     'user_id' => $currentUser->id,
                     'book_id' => $bookDetails['id'],
                     'address_id' => $getAddress['id'],
+
                 ]);
 
                 $userId = User::where('id', $currentUser->id)->first();

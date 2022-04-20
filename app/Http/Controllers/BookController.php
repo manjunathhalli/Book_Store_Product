@@ -78,17 +78,8 @@ class BookController extends Controller
                 if ($bookDetails) {
                     throw new BookStoreException("Book is already exist in there", 401);
                 }
-                //$imageName = time() . '.' . $request->image->extension();
-                $path = Storage::disk('s3')->put('bookimage2', $request->image);
-                $url = env('AWS_URL') . $path;
-                $book->name = $request->input('name');
-                $book->description = $request->input('description');
-                $book->author = $request->input('author');
-                $book->image = $url;
-                $book->Price = $request->input('Price');
-                $book->quantity = $request->input('quantity');
-                $book->user_id = $currentUser->id;
-                $book->save();
+
+                $book->saveBookDetails($request, $currentUser)->save();
             } else {
                 Log::error('Invalid User');
                 throw new BookStoreException("Invalid authorization token", 404);
@@ -324,7 +315,6 @@ class BookController extends Controller
             if (!$bookDetails) {
                 return response()->json(['message' => 'Book not Found'], 404);
             }
-
             $path = str_replace(env('AWS_URL'), '', $bookDetails->image);
             if (Storage::disk('s3')->exists($path)) {
                 Storage::disk('s3')->delete($path);
@@ -483,21 +473,16 @@ class BookController extends Controller
             $currentUser = JWTAuth::parseToken()->authenticate();
 
             if ($currentUser) {
-                $userbooks = Book::leftJoin('carts', 'carts.book_id', '=', 'books.id')
-                    ->select('books.id', 'books.name', 'books.description', 'books.author', 'books.image', 'books.Price', 'books.quantity')
-                    ->Where('books.name', 'like', '%' . $searchKey . '%')
-                    ->orWhere('books.author', 'like', '%' . $searchKey . '%')
-                    ->get();
-
+                $userbooks = new Book();
+                Log::info('Search is Successfull');
+                return response()->json([
+                    'message' => 'Search done Successfully',
+                    'books' => $userbooks->searchBook($searchKey)
+                ], 201);
                 if ($userbooks == '[]') {
                     Log::error('No Book Found');
                     throw new BookStoreException("No Book Found For This Search Key ", 404);
                 }
-                Log::info('Search is Successfull');
-                return response()->json([
-                    'message' => 'Search done Successfully',
-                    'books' => $userbooks
-                ], 201);
             }
         } catch (BookStoreException $exception) {
             return $exception->message();
