@@ -83,19 +83,20 @@ class OrderController extends Controller
                     'user_id' => $currentUser->id,
                     'book_id' => $bookDetails['id'],
                     'address_id' => $getAddress['id'],
+                    'order_id' => $this->gen_uid(10),
 
                 ]);
 
                 $userId = User::where('id', $currentUser->id)->first();
 
                 $delay = now()->addSeconds(5);
-                $userId->notify((new SendOrderDetails($order->id, $bookDetails['name'], $bookDetails['author'], $request->input('quantity'), $total_price))->delay($delay));
+                $userId->notify((new SendOrderDetails($order->order_id, $bookDetails['name'], $bookDetails['author'], $request->input('quantity'), $total_price))->delay($delay));
 
                 $bookDetails['quantity'] -= $request->quantity;
                 $bookDetails->save();
                 return response()->json([
                     'message1' => 'Order Successfully Placed...',
-                    'OrderId' => $order->id,
+                    'OrderId' => $order->order_id,
                     'Quantity' => $request->input('quantity'),
                     'Total_Price' => $total_price,
                     'message2' => 'Mail also sent to the user with all details',
@@ -107,5 +108,10 @@ class OrderController extends Controller
         } catch (BookStoreException $exception) {
             return $exception->message();
         }
+    }
+
+    function gen_uid($l)
+    {
+        return substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyz"), 0, $l);
     }
 }
