@@ -779,6 +779,46 @@
                 ]
             }
         },
+        "/api/getAverageRatingByBookId": {
+            "post": {
+                "summary": "average rating of book",
+                "description": "average rating of book",
+                "operationId": "0d048f013b3a3cb7853c20fed9f54ed8",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "book_id"
+                                ],
+                                "properties": {
+                                    "book_id": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Average rating of Book ."
+                    },
+                    "401": {
+                        "description": "Invalid authorization token"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
         "/api/forgotPassword": {
             "post": {
                 "summary": "forgot password",

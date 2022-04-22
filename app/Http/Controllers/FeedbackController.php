@@ -75,4 +75,64 @@ class FeedbackController extends Controller
             return $exception->message();
         }
     }
+
+    /**
+     *  @OA\Post(
+     *   path="/api/getAverageRatingByBookId",
+     *   summary="average rating of book",
+     *   description="average rating of book",
+     *   @OA\RequestBody(
+     *         @OA\JsonContent(),
+     *         @OA\MediaType(
+     *            mediaType="multipart/form-data",
+     *            @OA\Schema(
+     *               type="object",
+     *             required={"book_id"},
+     *               @OA\Property(property="book_id", type="integer"),
+     *            ),
+     *        ),
+     *    ),
+     *   @OA\Response(response=201, description="Average rating of Book ."),
+     *   @OA\Response(response=401, description="Invalid authorization token"),
+     *   security={
+     *       {"Bearer": {}}
+     *     }
+     * )
+     * Function takes input as book id from user and 
+     * return the avearage rating perticular book from feedbacks database. 
+     */
+
+    public function getAverageRatingByBookId(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'book_id' => 'required|integer'
+            ]);
+            if ($validator->fails()) {
+                return response()->json($validator->errors(), 400);
+            }
+            $currentUser = JWTAuth::parseToken()->authenticate();
+            $book = new Book();
+            if (!$currentUser) {
+                throw new BookStoreException("Invalid authorization token", 401);
+            } else {
+                $feedback = new Feedback();
+                $book_id = $request->input('book_id');
+                $book_existance = $book->findingBook($book_id);
+            }
+            if (!$book_existance) {
+                return response()->json([
+                    'status' => 404,
+                    'message' => 'Book Not Found'
+                ], 404);
+            }
+            return response()->json([
+                'message' => 'Average rating of Book ' . $book_id .  ':',
+                'Average Rating' => $feedback->avgRating($book_id)
+            ], 201);
+        } catch (BookStoreException $exception) {
+            Log::error('Invalid User');
+            return $exception->message();
+        }
+    }
 }
