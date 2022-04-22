@@ -16,7 +16,14 @@ return new class extends Migration
         Schema::create('feedbacks', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('user_id');
+            $table->unsignedInteger('book_id');
             $table->string('feedback');
+            $table->integer('rating');
+            $table->foreign('book_id')
+                ->references('id')
+                ->on('books')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users')

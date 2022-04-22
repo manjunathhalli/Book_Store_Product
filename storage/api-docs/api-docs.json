@@ -741,11 +741,19 @@
                         "multipart/form-data": {
                             "schema": {
                                 "required": [
-                                    "feedback"
+                                    "book_id",
+                                    "feedback",
+                                    "rating"
                                 ],
                                 "properties": {
+                                    "book_id": {
+                                        "type": "integer"
+                                    },
                                     "feedback": {
                                         "type": "string"
+                                    },
+                                    "rating": {
+                                        "type": "integer"
                                     }
                                 },
                                 "type": "object"
@@ -758,7 +766,7 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "feedback submited successfully"
+                        "description": "Thanks for providing us with detailed feedback about our service."
                     },
                     "401": {
                         "description": "Invalid authorization token"
