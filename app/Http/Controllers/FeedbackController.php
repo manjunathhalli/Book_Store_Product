@@ -126,9 +126,11 @@ class FeedbackController extends Controller
                     'message' => 'Book Not Found'
                 ], 404);
             }
+            $bookDetails = $book->findingBook($book_id);
             return response()->json([
                 'message' => 'Average rating of Book ' . $book_id .  ':',
-                'Average Rating' => $feedback->avgRating($book_id)
+                'Average Rating' => $feedback->avgRating($book_id),
+                'book Detail' => $bookDetails
             ], 201);
         } catch (BookStoreException $exception) {
             Log::error('Invalid User');
